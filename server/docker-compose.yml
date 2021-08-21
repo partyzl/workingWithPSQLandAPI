@@ -1,0 +1,35 @@
+version: '3'
+services:
+  server:
+    image: node:14
+    working_dir: /server
+    ports: 
+      - 3000:3000
+    environment: 
+      - PORT=3000
+      - PGUSER=futurebook
+      - PGHOST=db
+      - PGPASSWORD=password
+      - PGDATABASE=my-app-db
+      - PGPORT=5432
+    depends_on:
+      - db
+    volumes:
+      - type: bind
+        source: ./api
+        target: /server
+    command: bash -c "npm install && npm start"
+
+  db:
+    image: postgres:latest
+    ports:
+      - 35432:5432
+    volumes:
+      - "dbdata:/var/lib/postgresql/data"
+      - "./db/:/docker-entrypoint-initdb.d/:ro"
+    environment: 
+      - POSTGRES_DB=my-app-db
+      - POSTGRES_USER=futurebook
+      - POSTGRES_PASSWORD=password
+volumes:
+  dbdata:

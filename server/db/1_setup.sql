@@ -1,0 +1,8 @@
+DROP TABLE IF EXISTS users;
+
+CREATE TABLE users(
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(40) NOT NULL,
+    email VARCHAR(40) UNIQUE NOT NULL,
+    age INT CHECK (age>0 AND age<120)
+);
